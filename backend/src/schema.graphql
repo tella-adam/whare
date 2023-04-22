@@ -1,0 +1,294 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Auth {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+  user: User!
+}
+
+input ChangePasswordInput {
+  newPassword: String!
+  oldPassword: String!
+}
+
+type Chore {
+  assignedTo: User
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  createdBy: User
+  description: String
+  done: Boolean!
+  id: ID!
+  name: String!
+  reward: String
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type ChoreConnection {
+  edges: [ChoreEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ChoreEdge {
+  cursor: String!
+  node: Chore!
+}
+
+input ChoreOrder {
+  direction: OrderDirection!
+  field: ChoreOrderField!
+}
+
+"""Properties by which chore connections can be ordered."""
+enum ChoreOrderField {
+  createdAt
+  description
+  done
+  id
+  name
+  published
+  reward
+  updatedAt
+}
+
+input CreateChoreInput {
+  assignedToId: String!
+  createdById: String!
+  description: String!
+  done: Boolean!
+  name: String!
+  reward: String!
+}
+
+input CreateFamilyInput {
+  members: [String!]!
+  name: String!
+}
+
+input CreatePostInput {
+  content: String!
+  title: String!
+}
+
+input CreateTaskInput {
+  assignedToId: String!
+  createdById: String!
+  description: String!
+  done: Boolean!
+  name: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Family {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  members: [User!]
+  name: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  addMemberToFamily(familyId: String!, userId: String!): Family!
+  changePassword(data: ChangePasswordInput!): User!
+  createChore(data: CreateChoreInput!): Chore!
+  createFamily(data: CreateFamilyInput!): Family!
+  createPost(data: CreatePostInput!): Post!
+  createTask(data: CreateTaskInput!): Task!
+  deleteChore(id: String!): Chore!
+  deleteFamily(familyId: String!): Family!
+  deleteTask(id: String!): Task!
+  login(data: LoginInput!): Auth!
+  markChoreAsDone(id: String!): Chore!
+  markChoreAsUndone(id: String!): Chore!
+  markTaskAsDone(id: String!): Task!
+  markTaskAsUndone(id: String!): Task!
+  refreshToken(token: JWT!): Token!
+  removeMemberFromFamily(familyId: String!, userId: String!): Family!
+  signup(data: SignupInput!): Auth!
+  updateChore(data: CreateChoreInput!, id: String!): Chore!
+  updateTask(data: CreateTaskInput!, id: String!): Task!
+  updateUser(data: UpdateUserInput!): User!
+}
+
+"""
+Possible directions in which to order a list of items when provided an `orderBy` argument.
+"""
+enum OrderDirection {
+  asc
+  desc
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type Post {
+  author: User
+  content: String
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  published: Boolean!
+  title: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type PostConnection {
+  edges: [PostEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type PostEdge {
+  cursor: String!
+  node: Post!
+}
+
+input PostOrder {
+  direction: OrderDirection!
+  field: PostOrderField!
+}
+
+"""Properties by which post connections can be ordered."""
+enum PostOrderField {
+  content
+  createdAt
+  id
+  published
+  title
+  updatedAt
+}
+
+type Query {
+  chore(choreId: String!): Chore!
+  hello(name: String!): String!
+  helloWorld: String!
+  me: User!
+  myFamily: [Family!]!
+  post(taskId: String!): Task!
+  publishedPosts(after: String, before: String, first: Int, last: Int, orderBy: PostOrder, query: String, skip: Int): PostConnection!
+  unfinishedChores(after: String, before: String, first: Int, last: Int, orderBy: ChoreOrder, query: String, skip: Int): ChoreConnection!
+  unfinishedTasks(after: String, before: String, first: Int, last: Int, orderBy: TaskOrder, query: String, skip: Int): TaskConnection!
+  userChores(userId: String!): [Chore!]!
+  userPosts(userId: String!): [Post!]!
+  userTasks(userId: String!): [Task!]!
+}
+
+"""User role"""
+enum Role {
+  ADMIN
+  USER
+}
+
+input SignupInput {
+  email: String!
+  firstname: String
+  lastname: String
+  password: String!
+}
+
+type Subscription {
+  choreCreated: Chore!
+  postCreated: Family!
+}
+
+type Task {
+  assignedTo: User
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  createdBy: User
+  description: String
+  done: Boolean!
+  id: ID!
+  name: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type TaskConnection {
+  edges: [TaskEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TaskEdge {
+  cursor: String!
+  node: Task!
+}
+
+input TaskOrder {
+  direction: OrderDirection!
+  field: TaskOrderField!
+}
+
+"""Properties by which task connections can be ordered."""
+enum TaskOrderField {
+  createdAt
+  description
+  done
+  id
+  name
+  published
+  updatedAt
+}
+
+type Token {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+}
+
+input UpdateUserInput {
+  firstname: String
+  lastname: String
+}
+
+type User {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  email: String!
+  firstname: String
+  id: ID!
+  lastname: String
+  posts: [Post!]
+  role: Role!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
